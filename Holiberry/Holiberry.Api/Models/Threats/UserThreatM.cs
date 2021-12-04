@@ -1,4 +1,5 @@
 ﻿using Holiberry.Api.Common.DTO;
+using Holiberry.Api.Config;
 using Holiberry.Api.Models.Common.Entities;
 using NetTopologySuite.Geometries;
 using System;
@@ -30,7 +31,19 @@ namespace Holiberry.Api.Models.Threats
 
         public string GetPhotoUrl() 
         {
-            return string.Empty;
+            return this.Type switch
+            {
+                UserThreatTypeE.Danger => $"{ConfigAPI.WebAppUrl}images/zagrozenia.png",
+                UserThreatTypeE.NoSideWalk => $"{ConfigAPI.WebAppUrl}images/brakchodnika.png",
+                UserThreatTypeE.Noise => $"{ConfigAPI.WebAppUrl}images/brakchodnika.png",
+                UserThreatTypeE.DangerousPlace => $"{ConfigAPI.WebAppUrl}images/niebezpiecznemiejsca.png",
+                UserThreatTypeE.DangerousPass => $"{ConfigAPI.WebAppUrl}images/niebezpieczneprzejscie.png",
+                UserThreatTypeE.NoLights => $"{ConfigAPI.WebAppUrl}images/nieoswietlonadroga.png",
+                UserThreatTypeE.UnevenSidewalk => $"{ConfigAPI.WebAppUrl}images/nierownychodnik.png",
+                UserThreatTypeE.RoadWorks => $"{ConfigAPI.WebAppUrl}images/robotydrogowe.png",
+                UserThreatTypeE.Accident => $"{ConfigAPI.WebAppUrl}images/wypadek.png",
+                _ => string.Empty
+            };
         }
 
         public void RefreshVotes() 
