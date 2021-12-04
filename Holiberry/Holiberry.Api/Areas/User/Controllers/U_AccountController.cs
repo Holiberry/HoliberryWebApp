@@ -109,6 +109,7 @@ namespace Holiberry.Api.Areas.User.Controllers
             {
                 new QuestM()
                 {
+                    Id = 6,
                     Description = "Pokonaj pieszo 2km!",
                     Name = "Dzień nóg!",
                     PrizePointsAmount = 10,
@@ -118,6 +119,7 @@ namespace Holiberry.Api.Areas.User.Controllers
                 },
                 new QuestM()
                 {
+                    Id = 9,
                     Description = "Pokonaj rowerem 5km!",
                     Name = "Wycieczkowo!",
                     PrizePointsAmount = 25,
@@ -127,6 +129,7 @@ namespace Holiberry.Api.Areas.User.Controllers
                 },
                 new QuestM()
                 {
+                    Id = 7,
                     Description = "Dostań się do szkoły hulajnogą!",
                     Name = "Happy scooter!",
                     PrizePointsAmount = 15,
@@ -158,6 +161,20 @@ namespace Holiberry.Api.Areas.User.Controllers
                     Status = UserQuestStatusE.Finished,
                     CreatedAt = DateTimeOffset.Now,
                 },
+            };
+
+
+            return Ok(quests);
+        }
+
+
+
+        [HttpGet("quests-finished")]
+        public async Task<IActionResult> GetCompletedQuests()
+        {
+            var quests = new List<UserQuestM>()
+            {
+                
             };
 
 
