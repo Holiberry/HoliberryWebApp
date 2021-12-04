@@ -29,12 +29,15 @@ namespace Holiberry.Api.Areas.Public.Controllers
 
         [HttpGet("")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAirQuality()
+        public async Task<IActionResult> GetAirQuality(long? cityId)
         {
+            if (cityId == null)
+                cityId = 1064;
+
             var stations = await _airQualityApi.GetStations();
 
-            var wroStations = stations
-                .Where(a => a.City.Id == 1064) // WRO
+            var cityStations = stations
+                .Where(a => a.City.Id == cityId) // WRO
                 .Select(a => new StationDTO
                 {
                     StationId = a.Id,
@@ -44,7 +47,7 @@ namespace Holiberry.Api.Areas.Public.Controllers
                 })
                 .ToList();
 
-            foreach (var station in wroStations)
+            foreach (var station in cityStations)
             {
                 var airQualityIndex = await _airQualityApi.GetSensorAirQualityIndex(station.StationId);
 
@@ -95,7 +98,7 @@ namespace Holiberry.Api.Areas.Public.Controllers
                 }
             }
 
-            return Ok(wroStations);
+            return Ok(cityStations);
         }
 
 
