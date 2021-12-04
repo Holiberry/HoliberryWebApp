@@ -41,8 +41,8 @@
                         <!-- Logo @@s -->
                         <div class="header-logo logo animated" data-animate="fadeInDown" data-delay=".6">
                             <a href="./" class="logo-link">
-                                <img class="logo-dark" src="images/logo.png" srcset="images/logo.png 2x" alt="logo">
-                                <img class="logo-light" src="images/logo-full-white.png" srcset="images/logo-full-white.png 2x" alt="logo">
+                                <img class="logo-dark" src="~/images/logo.png" srcset="~/images/logo.png 2x" alt="logo">
+                                <img class="logo-light" src="~/images/logo-full-white.png" srcset="~/images/logo-full-white.png 2x" alt="logo">
                             </a>
                         </div>
                         <!-- Menu Toogle @@s -->
@@ -58,19 +58,19 @@
                             <nav class="header-menu" id="header-menu">
                                 <ul class="menu">
                                     <li class="menu-item">
-                                        <a class="menu-link nav-link" href="#ofirmie">O firmie</a>
+                                        <a class="menu-link nav-link" href="@Url.Action("Index", "Home")">Strona główna</a>
                                     </li>
                                     <li class="menu-item">
-                                        <a class="menu-link nav-link" href="#rozwiazania">Rozwiązania</a>
+                                        <a class="menu-link nav-link" href="@Url.Action("Index", "Home")#ofirmie">O firmie</a>
                                     </li>
                                     <li class="menu-item">
-                                        <a class="menu-link nav-link" href="#klienci">Klienci</a>
+                                        <a class="menu-link nav-link" href="@Url.Action("Index", "Home")#rozwiazania">Rozwiązania</a>
                                     </li>
                                     <li class="menu-item">
-                                        <a class="menu-link nav-link" href="#kontakt">Kontakt</a>
+                                        <a class="menu-link nav-link" href="@Url.Action("Index", "Home")#klienci">Klienci</a>
                                     </li>
                                     <li class="menu-item">
-                                        <a class="menu-link nav-link" href="@Url.Action("Ranking", "Public")">Ranking</a>
+                                        <a class="menu-link nav-link" href="@Url.Action("Index", "Home")#kontakt">Kontakt</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -81,39 +81,8 @@
             <!-- Banner @@s -->
             <div class="header-banner bg-theme-grad">
                 <div class="nk-banner">
-                    <div class="banner banner-fs banner-pd-lg">
-                        <div class="banner-wrap">
-                            <div class="container">
-                                <div class="row gutter-vr-30px align-items-center justify-content-lg-between justify-content-center">
-                                    <div class="col-lg-5 col-sm-9 order-lg-last">
-                                        <div class="banner-gfx-re-s3 my-0 animated" data-animate="fadeInUp" data-delay="1">
-                                            <img src="/images/landing-hub.png" alt="header">
-                                        </div>
-                                    </div><!-- .col -->
-                                    <div class="col-lg-7 col-xl-6 col-sm-10 text-center text-lg-left">
-                                        <div class="banner-caption cpn tc-light">
-                                            <div class="cpn-head">
-                                                <h1 class="title title-md animated" data-animate="fadeInUp" data-delay="1.1">Nowoczesna <br class="d-none d-md-block">Mobilność Współdzielona</h1>
-                                            </div>
-                                            <div class="cpn-text cpn-text-light">
-                                                <p class="lead animated" data-animate="fadeInUp" data-delay="1.2">FiberMove to dostawca nowoczesnych rozwiązań w obszarach mobilności współdzielonej</p>
-                                            </div>
-                                            <div class="cpn-action mt-0">
-                                                <div class="cpn-btns pt-4 animated" data-animate="fadeInUp" data-delay="1.3">
-                                                    <ul class="btn-grp">
-                                                        <li><a href="#ofirmie" class="btn btn-primary btn-lg menu-link nav-link">Zobacz więcej</a></li>
-                                                        @*<li><a href="#" class="btn btn-outline btn-primary on-bg-theme-alt btn-lg">Kontakt</a></li>*@
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .col -->
-                                </div><!-- .row -->
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div><!-- .nk-banner -->
-                <div class="nk-ovm mask-f mask-contain-bottom shape-a2"></div>
 
                 <!-- Place Particle Js -->
                 <!-- <div id="particles-bg" class="particles-container particles-bg"></div> -->
@@ -161,7 +130,7 @@
                         <!-- .col -->
                         <div class="col-lg-4 col-md-8 offset-lg-1">
                             <div class="wgs wgs-text">
-                                <a class="wgs-logo" href="#"><img src="/images/logo-full-white.png" srcset="/images/logo-full-white.png 2x" alt="logo"></a>
+                                <a class="wgs-logo" href="#"><img src="images/logo-full-white.png" srcset="images/logo-full-white.png 2x" alt="logo"></a>
                                 <div class="wgs-body">
                                     <div class="wgs-subscribe wgs-subscribe-s2">
                                         <p>FiberMove to dostawca nowoczesnych rozwiązań w obszarach mobilności współdzielonej</p>        
