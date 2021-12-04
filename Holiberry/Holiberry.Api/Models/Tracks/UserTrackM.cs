@@ -16,6 +16,8 @@ namespace Holiberry.Api.Models.Tracks
         public DateTimeOffset? DateFinish { get; set; }
 
 
+        public double Distance { get; set; }
+
         public TrackStatusE Status { get; set; }
 
         public long UserId { get; set; }
