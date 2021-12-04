@@ -60,7 +60,17 @@ namespace Holiberry.Api.Areas.User.Controllers
                     Id = a.Id,
                     FirstName = a.FirstName,
                     LastName = a.LastName,
-                    Email = a.Email
+                    Email = a.Email,
+                    Points = a.Points,
+                    Home = a.Home,
+                    School = a.School,
+                    TotalDistanceBike = a.TotalDistanceBike,
+                    TotalDistanceScooter = a.TotalDistanceScooter,
+                    TotalDistanceWalking = a.TotalDistanceWalking,
+                    TotalPrizes = a.TotalPrizes,
+                    TotalQuests = a.TotalQuests,
+                    TotalPointsEarned = a.TotalPointsEarned,
+
                 })
                 .FirstOrDefaultAsync() ?? throw new ServiceException("Nie znaleziono użytkownika");
 
@@ -73,6 +83,20 @@ namespace Holiberry.Api.Areas.User.Controllers
                 Email = user.Email,
                 Login = user.Email,
                 Roles = await _userManager.GetRolesAsync(user),
+
+                Points = user.Points,
+                Home = user.Home,
+                School = user.School,
+                TotalDistanceBike = user.TotalDistanceBike,
+                TotalDistanceScooter = user.TotalDistanceScooter,
+                TotalDistanceWalking = user.TotalDistanceWalking,
+                TotalPrizes = user.TotalPrizes,
+                TotalQuests = user.TotalQuests,
+                TotalPointsEarned = user.TotalPointsEarned,
+                
+                hasSchool = user.School != null,
+                hasHome = user.Home != null,
+                hasParent = user.ParentId != null,
             });
         }
 
@@ -134,7 +158,6 @@ namespace Holiberry.Api.Areas.User.Controllers
                     Status = UserQuestStatusE.Finished,
                     CreatedAt = DateTimeOffset.Now,
                 },
-
             };
 
 
