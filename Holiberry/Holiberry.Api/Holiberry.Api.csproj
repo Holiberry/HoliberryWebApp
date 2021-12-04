@@ -49,6 +49,9 @@
     <Folder Include="Areas\User\DTO\" />
     <Folder Include="Areas\User\Requests\U_Account\" />
     <Folder Include="Areas\User\Responses\U_Account\" />
+    <Folder Include="Areas\Web\Controllers\" />
+    <Folder Include="Areas\Web\ViewModels\" />
+    <Folder Include="Areas\Web\Views\" />
   </ItemGroup>
   
 </Project>

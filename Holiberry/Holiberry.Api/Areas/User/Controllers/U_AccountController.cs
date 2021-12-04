@@ -1,4 +1,5 @@
 ﻿using Holiberry.Api.Attributes;
+using Holiberry.Api.Config;
 using Holiberry.Api.Extensions;
 using Holiberry.Api.Models.Exceptions;
 using Holiberry.Api.Models.Users.Entities.Identity;
@@ -15,6 +16,7 @@ namespace Holiberry.Api.Areas.User.Controllers
 {
     [Route("v1/user/account")]
     [TypeFilter(typeof(ApiExceptionFilterAttribute))]
+    [Area(AreasConfig.User)]
     [ApiAuthorize]
     public class U_AccountController : Controller
     {

@@ -128,54 +128,54 @@ namespace Holiberry.Api.Areas.Public.Controllers
 
 
 
-        [HttpPost("schools")]
-        public async Task<IActionResult> PostSchools([FromBody] List<SchoolDTO> schools)
-        {
-            var city = await _db.Cities
-                .Where(a => a.Code == "WRO")
-                .FirstOrDefaultAsync();
-            if(city == null)
-            {
-                city = new CityM()
-                {
-                    Code = "WRO",
-                    Name = "Wrocław",
-                    Lat = 51.107883,
-                    Lng = 17.038538,
-                };
+    //    [HttpPost("schools")]
+    //    public async Task<IActionResult> PostSchools([FromBody] List<SchoolDTO> schools)
+    //    {
+    //        var city = await _db.Cities
+    //            .Where(a => a.Code == "WRO")
+    //            .FirstOrDefaultAsync();
+    //        if(city == null)
+    //        {
+    //            city = new CityM()
+    //            {
+    //                Code = "WRO",
+    //                Name = "Wrocław",
+    //                Lat = 51.107883,
+    //                Lng = 17.038538,
+    //            };
 
-                await _db.AddAsync(city);
-            }
-
-
-            var schoolsToAdd = new List<SchoolM>();
-
-            foreach (var s in schools)
-            {
-                double? lat = double.TryParse(s.Coordinates?.Split(",")?.FirstOrDefault(), NumberStyles.Any, new CultureInfo("en"), out var _lat) ? _lat : (double?)null;
-                double? lng = double.TryParse(s.Coordinates?.Split(",")?.LastOrDefault(), NumberStyles.Any, new CultureInfo("en"), out var _lng) ? _lng : (double?)null;
+    //            await _db.AddAsync(city);
+    //        }
 
 
-                var sch = new SchoolM()
-                {
-                    City = city,
-                    Name = s.Nazwa,
-                    NumberRSPO = int.Parse(s.NumerRSPO),
-                    Lat = lat,
-                    Lng = lng
-                };
+    //        var schoolsToAdd = new List<SchoolM>();
 
-                schoolsToAdd.Add(sch);
-            }
-
-            await _db.AddRangeAsync(schoolsToAdd);
-            await _db.SaveChangesAsync();
-
-            return Ok();
-        }
+    //        foreach (var s in schools)
+    //        {
+    //            double? lat = double.TryParse(s.Coordinates?.Split(",")?.FirstOrDefault(), NumberStyles.Any, new CultureInfo("en"), out var _lat) ? _lat : (double?)null;
+    //            double? lng = double.TryParse(s.Coordinates?.Split(",")?.LastOrDefault(), NumberStyles.Any, new CultureInfo("en"), out var _lng) ? _lng : (double?)null;
 
 
-    }
+    //            var sch = new SchoolM()
+    //            {
+    //                City = city,
+    //                Name = s.Nazwa,
+    //                NumberRSPO = int.Parse(s.NumerRSPO),
+    //                Lat = lat,
+    //                Lng = lng
+    //            };
+
+    //            schoolsToAdd.Add(sch);
+    //        }
+
+    //        await _db.AddRangeAsync(schoolsToAdd);
+    //        await _db.SaveChangesAsync();
+
+    //        return Ok();
+    //    }
+
+
+    //}
 
 
     public class SchoolDTO
