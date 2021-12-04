@@ -1,5 +1,7 @@
 ﻿using Holiberry.Api.Attributes;
 using Holiberry.Api.Config;
+using Holiberry.Api.Models.Threats;
+using Holiberry.Api.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,41 @@ namespace Holiberry.Api.Areas.User.Controllers
     [ApiAuthorize]
     public class U_ThreatsController : Controller
     {
+
+
+        private readonly ApplicationDbContext _db;
+
+        public U_ThreatsController(
+            ApplicationDbContext db
+            )
+        {
+            _db = db;
+        }
+
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateThreat(double locLat, double locLng, UserThreatTypeE type)
+        {
+
+
+            return Ok(new
+            {
+                userThreatId = 5,
+            });
+        }
+
+
+        [HttpPost("vote")]
+        public async Task<IActionResult> VoteThreat(double locLat, double locLng, string voteType)
+        {
+
+
+
+            return Ok(new
+            {
+                userThreatId = 7,
+            });
+        }
 
 
 

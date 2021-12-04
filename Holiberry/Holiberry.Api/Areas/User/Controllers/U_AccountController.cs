@@ -2,12 +2,15 @@
 using Holiberry.Api.Config;
 using Holiberry.Api.Extensions;
 using Holiberry.Api.Models.Exceptions;
+using Holiberry.Api.Models.Quests;
 using Holiberry.Api.Models.Users.Entities.Identity;
 using Holiberry.Api.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -75,6 +78,68 @@ namespace Holiberry.Api.Areas.User.Controllers
 
 
 
+        [HttpGet("current-quests")]
+        public async Task<IActionResult> GetCurrentQuests()
+        {
+            var quests = new List<QuestM>()
+            {
+                new QuestM()
+                {
+                    Description = "Pokonaj pieszo 2km!",
+                    Name = "Dzień nóg!",
+                    PrizePointsAmount = 10,
+                    DateFrom = DateTimeOffset.Now.Date.AddDays(-1),
+                    DateTo = DateTimeOffset.Now.Date.AddDays(1),
+                    Status = QuestStatusE.Active
+                },
+                new QuestM()
+                {
+                    Description = "Pokonaj rowerem 5km!",
+                    Name = "Wycieczkowo!",
+                    PrizePointsAmount = 25,
+                    DateFrom = DateTimeOffset.Now.Date.AddDays(-1),
+                    DateTo = DateTimeOffset.Now.Date.AddDays(1),
+                    Status = QuestStatusE.Active
+                },
+                new QuestM()
+                {
+                    Description = "Dostań się do szkoły hulajnogą!",
+                    Name = "Happy scooter!",
+                    PrizePointsAmount = 15,
+                    DateFrom = DateTimeOffset.Now.Date.AddDays(-1),
+                    DateTo = DateTimeOffset.Now.Date.AddDays(1),
+                    Status = QuestStatusE.Active
+                }
+            };
+
+
+            return Ok(quests);
+        }
+
+
+        [HttpGet("quests")]
+        public async Task<IActionResult> GetMyCurrentQuests()
+        {
+            var quests = new List<UserQuestM>()
+            {
+                new UserQuestM()
+                {
+                    QuestId = 3,
+                    Status = UserQuestStatusE.Active,
+                    CreatedAt = DateTimeOffset.Now,
+                },
+                new UserQuestM()
+                {
+                    QuestId = 4,
+                    Status = UserQuestStatusE.Finished,
+                    CreatedAt = DateTimeOffset.Now,
+                },
+
+            };
+
+
+            return Ok(quests);
+        }
 
 
 
@@ -91,7 +156,5 @@ namespace Holiberry.Api.Areas.User.Controllers
 
 
 
-        
-
-    }
+        }
 }
