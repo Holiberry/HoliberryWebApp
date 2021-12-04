@@ -28,6 +28,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using Microsoft.AspNetCore.Http;
 
 namespace Holiberry.Api
 {
@@ -67,8 +68,25 @@ namespace Holiberry.Api
                     });
             });
 
+            // Add your configs object here
+            services.AddOptions();
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("Database")));
+
+            services.AddAuthentication().AddCookie(cfg =>
+            {
+                cfg.SlidingExpiration = true;
+                //cfg.ExpireTimeSpan = TimeSpan.FromDays(7);
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(cfg =>
@@ -87,6 +105,8 @@ namespace Holiberry.Api
             services.AddIdentity<UserM, RoleM>()
               .AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
+
+
 
             //LowerCaseURLs
             services.AddRouting(options =>
@@ -131,11 +151,31 @@ namespace Holiberry.Api
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.AddControllersWithViews()
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                //options.Cookie.Expiration = TimeSpan.FromSeconds(5); //Old code
+                options.LoginPath = "/account/login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
+                options.LogoutPath = "/account/logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
+                options.AccessDeniedPath = "/account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
+                options.SlidingExpiration = true;
+                options.ExpireTimeSpan = TimeSpan.FromDays(10);
+                // options.EventsType = typeof(CustomCookieAuthenticationEvents);
+            });
+
+
+            var builder = services.AddControllersWithViews()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName.Contains("Holiberry"))))
                 .AddNewtonsoftJson(options =>
                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
+
+            if (_env.IsDevelopment())
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
 
             services.AddHttpClient();
 
@@ -166,6 +206,12 @@ namespace Holiberry.Api
                 });
             });
 
+            //Data protection (don't logout users after deploy)
+            services.AddDataProtection()
+                .SetApplicationName("holiberry")
+                .PersistKeysToFileSystem(new DirectoryInfo(@"netcore-keys/"));
+
+
             //AutoMapper - look for profiles and atributes in given assembly
             services.AddAutoMapper(typeof(MappingProfile));
 
@@ -194,10 +240,11 @@ namespace Holiberry.Api
             }
             app.UseApiExceptionHandler();
 
+
             // jeœli chcemy mieæ informacje w HttpContext np. o adresie Ip requestu (w innym wypadku jest on gubiony na proxy serwera)
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.All
             });
 
             //app.UseHttpsRedirection();
@@ -225,7 +272,10 @@ namespace Holiberry.Api
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}/{id?}",
+                    new { area = "Web", controller = "W_Home", action = "Index" });
             });
         }
     }

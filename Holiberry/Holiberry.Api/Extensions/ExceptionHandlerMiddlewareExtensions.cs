@@ -9,5 +9,10 @@ namespace Holiberry.Api.Extensions
         {
             return builder.UseMiddleware<ApiExceptionMiddleware>();
         }
+
+        public static IApplicationBuilder UseWebExceptionHandler(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<WebExceptionMiddleware>();
+        }
     }
 }

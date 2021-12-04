@@ -1,0 +1,127 @@
+﻿@model Holiberry.Api.ViewModels.Pagination.PaginationVM
+@{
+    int currentPage = Model.Pager.CurrentPage;
+    int pages = Model.Pager.Pages;
+    int rpp = Model.Pager.ResultsPerPage;
+}
+
+@if (Model.Pager.Pages > 1)
+{
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <ul class="pagination">
+
+            <!--Pager prev link-->
+            @if (currentPage > 1 && pages > 1)
+            {
+                <li class="paginate_button page-item previous">
+                    <a href="@Url.Action(Model.Action, Model.Controller, Model.GetRouteValuesForPage(currentPage - 1))" class="page-link"></a>
+                </li>
+            }
+            else
+            {
+                <li class="paginate_button page-item previous disabled">
+                    <a href="#" class="page-link"></a>
+                </li>
+            }
+
+            @if (currentPage != 1)
+            {
+                <li class="paginate_button page-item">
+                    <a href="@Url.Action(Model.Action, Model.Controller, Model.GetRouteValuesForPage(1))" class="page-link">1</a>
+                </li>
+            }
+
+            @if (currentPage >= 5 && pages >= 5)
+            {
+                <li class="paginate_button page-item disabled">
+                    <a href="#" class="page-link">...</a>
+                </li>
+            }
+
+            <!--Prev 2 pages-->
+            @for (int i = 2; i > 0; i--)
+            {
+                if ((currentPage - i) > 1)
+                {
+                    <li class="paginate_button page-item">
+                        <a href="@Url.Action(Model.Action, Model.Controller, Model.GetRouteValuesForPage(currentPage - i))" class="page-link">@(currentPage - i)</a>
+                    </li>
+                }
+            }
+
+
+            <li class="paginate_button page-item active">
+                <a href="@Url.Action(Model.Action, Model.Controller, Model.GetRouteValuesForPage(currentPage))" class="page-link">@(currentPage)</a>
+            </li>
+
+
+            @for (int i = 1; i <= 2; i++)
+            {
+                if (currentPage + i < pages)
+                {
+                    <li class="paginate_button page-item">
+                        <a href="@Url.Action(Model.Action, Model.Controller, Model.GetRouteValuesForPage(currentPage + i))" class="page-link">@(currentPage + i)</a>
+                    </li>
+                }
+            }
+
+            @if (currentPage + 3 < pages)
+            {
+                <li class="paginate_button page-item disabled">
+                    <a href="#" class="page-link">...</a>
+                </li>
+            }
+
+            <!--Last page-->
+            @if (currentPage != pages)
+            {
+                <li class="paginate_button page-item">
+                    <a href="@Url.Action(Model.Action, Model.Controller, Model.GetRouteValuesForPage(pages))" class="page-link">@pages</a>
+                </li>
+            }
+
+            <!--Pager next link-->
+            @if (currentPage < pages && pages > 0)
+            {
+                <li class="paginate_button page-item next">
+                    <a href="@Url.Action(Model.Action, Model.Controller, Model.GetRouteValuesForPage(currentPage + 1))" class="page-link"></a>
+                </li>
+            }
+            else
+            {
+                <li class="paginate_button page-item next disabled">
+                    <a href="#" class="page-link">
+                    </a>
+                </li>
+            }
+
+        </ul>
+        <div class="d-flex align-items-center py-3">
+            @* <div class="d-flex align-items-center"> *@
+            @*     <div class="mr-2 text-muted">Loading...</div> *@
+            @*     <div class="spinner mr-10"></div> *@
+            @* </div> *@
+            <label>
+                Pokaż
+                <select asp-for="@Model.Pager.ResultsPerPage" class="form-control form-control-sm custom-select" style="width: 75px;" id="perPageSelect">
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+                rekordów
+            </label>
+        </div>
+    </div>
+}
+
+<script>
+    //function changePageSize() {
+    //    let x = document.getElementById("perPageSelect").value;
+    //    let currentUrl = window.location.href;
+    //    let url = new URL(currentUrl);
+    //    url.searchParams.set('pagenumber', 1);
+    //    url.searchParams.set('PageSize', x);
+    //    window.location.href = url;
+    //}
+</script>

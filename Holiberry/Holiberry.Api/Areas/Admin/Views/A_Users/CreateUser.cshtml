@@ -1,0 +1,122 @@
+﻿@model Holiberry.Api.Areas.Admin.ViewModels.A_Users.CreateUserVM;
+@{
+    ViewBag.Title = "Utwórz użytkownika";
+    string controller = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-sm-10 col-md-8 col-lg-8 col-xl-6">
+            <div class="content-header row mt-1">
+                <div class="content-header-left col-12 mb-2">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12 d-flex align-items-center">
+                            <h4 class="content-header-title float-left mb-0">@ViewBag.Title</h4>
+                            <div class="breadcrumb-wrapper">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a href="@Url.Action("ViewAdminDashboard", "A_Dashboard")">
+                                            Pulpit
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        Utwórz użytkownika
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h4>Dane użytkownika</h4>
+                    <hr class="w-100" />
+                </div>
+                <div class="card-body">
+                    <form method="post" id="js-form">
+                        <div class="form-group row">
+                            <label asp-for="Email" class="col-lg-3 col-form-label text-lg-right text-sm-left"></label>
+                            <div class="col-lg-9 ">
+                                <div class="input-group">
+                                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row has-icon-left">
+                            <label asp-for="Password" class="col-lg-3 col-form-label text-lg-right text-sm-left"></label>
+                            <div class="col-lg-9 ">
+                                <div class="input-group">
+                                    <input class="form-control" asp-for="Password" type="password" placeholder="Hasło" autocomplete="off" data-toggle="tooltip" title="Hasło musi zawierać co najmniej 6 znaków" required />
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                                <div class="form-control-position">
+                                    <i class="feather icon-lock"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row has-icon-left">
+                            <label asp-for="ConfirmPassword" class="col-lg-3 col-form-label text-lg-right text-sm-left"></label>
+                            <div class="col-lg-9 ">
+                                <div class="input-group">
+                                    <input class="form-control" asp-for="ConfirmPassword" type="password" placeholder="Hasło" autocomplete="off" data-toggle="tooltip" title="Hasło musi zawierać co najmniej 6 znaków" required />
+                                </div>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                <div class="form-control-position">
+                                    <i class="feather icon-lock"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label asp-for="PhoneNumber" class="col-lg-3 col-form-label text-lg-right text-sm-left">Numer telefonu</label>
+                            <div class="col-lg-9">
+                                <div class="input-group">
+                                    <input asp-for="PhoneNumber" class="form-control" type="text" placeholder="Numer telefonu" />
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label asp-for="FirstName" class="col-lg-3 col-form-label text-lg-right text-sm-left">Imię</label>
+                            <div class="col-lg-9">
+                                <input asp-for="FirstName" class="form-control" placeholder="Imię" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="LastName" class="col-lg-3 col-form-label text-lg-right text-sm-left">Nazwisko</label>
+                            <div class="col-lg-9">
+                                <input asp-for="LastName" class="form-control" placeholder="Nazwisko" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-success float-right" id="js-f-submit"><i class="fa fa-save mr-25"></i>Zapisz</button>
+                    <a href="@Url.Action("ViewUsers", "A_Users")" type="button" class="btn btn-secondary float-right mr-1"><i class="fa fa-ban mr-25"></i>Anuluj</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#js-f-submit").on('click', function () {
+                $("#js-form").submit();
+            });
+        });
+    </script>
+}
+
+

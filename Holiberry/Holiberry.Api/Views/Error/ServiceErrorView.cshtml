@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Wystąpił błąd";
+}
+
+<!-- BEGIN: Content-->
+<div class="container mt-2">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="c-box-title text-danger">
+                @if (ViewData.Keys.Contains("ExceptionTitle"))
+                {
+                    <span>@ViewData["ExceptionTitle"]</span>
+                }
+                else
+                {
+                    <span>Wystąpił błąd</span>
+                }
+            </h6>
+        </div>
+        <div class="card-body">
+            @if (ViewData.Keys.Contains("ErrorMessage"))
+            {
+                <span>
+                    @ViewData["ErrorMessage"]
+                </span>
+
+            }
+            else
+            {
+                <span>Wystąpił nieoczekiwany błąd</span>
+            }
+            @if (ViewData.Keys.Contains("AdditionalExceptionInfo"))
+            {
+                <hr />
+                @Html.Raw(ViewData["AdditionalExceptionInfo"])
+
+            }
+        </div>
+        <div class="card-footer">
+            @if (ViewData.Keys.Contains("ReturnUrl"))
+            {
+                <a class="btn btn-primary" id="backButton" href="#">Wróć</a>
+            }
+        </div>
+    </div>
+</div>
+   
+@section scripts
+{ 
+    <script>
+        $(function () {
+            $("#backButton").on('click', function (e) {
+                e.preventDefault();
+                window.history.go(-1);
+            });
+        });
+    </script>
+}
+
+
+    
+

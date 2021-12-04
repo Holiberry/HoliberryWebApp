@@ -14,11 +14,6 @@ namespace Holiberry.Api.Areas.Public.Controllers
     [ApiAuthorize]
     public class P_HomeController : ControllerBase
     {
-        [HttpGet("")]
-        [AllowAnonymous]
-        public IActionResult Index()
-        {
-            return Ok("ok");
-        }
+
     }
 }

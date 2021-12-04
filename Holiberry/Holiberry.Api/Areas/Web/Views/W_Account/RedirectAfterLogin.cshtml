@@ -1,0 +1,21 @@
+﻿@{
+
+}
+
+@if (User.IsInRole(UserRoles.Admin))
+{
+    <a id="redirectLink" href="@Url.Action("ViewAdminDashboard", "A_Dashboard", new { area = AreasConfig.Admin })">Przejdź do panelu</a>
+}
+else
+{
+    <a id="redirectLink" href="@Url.Action("Index", "W_Home")">Przejdź</a>
+}
+
+@section scripts{
+    <script>
+        window.onload = function () {
+            let red = document.getElementById("redirectLink");
+            window.location = red.getAttribute("href");
+        };
+    </script>
+}

@@ -7,6 +7,7 @@
 
 
         public const string Web = "Web";
+        public const string Admin = "Admin";
 
     }
 }

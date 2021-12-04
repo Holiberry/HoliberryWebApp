@@ -1,0 +1,114 @@
+﻿@model Holiberry.Api.Areas.Admin.ViewModels.A_Users.UpdateUserVM
+@{
+    string updateKey = "userId";
+    ViewBag.Title = "Edytuj użytkownika";
+    string controller = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+
+<div class="container-fluid">
+    <div class="content-header row mt-1">
+        <div class="content-header-left col-md-9 col-12 mb-2">
+            <div class="row breadcrumbs-top">
+                <div class="col-12 d-flex align-items-center">
+                    <h4 class="content-header-title float-left mb-0">@ViewBag.Title</h4>
+                    <div class="breadcrumb-wrapper">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="@Url.Action("ViewAdminDashboard", "A_Dashboard")">
+                                    Pulpit
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="@Url.Action("ViewUsers", controller)">
+                                    Użytkownicy
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="@Url.Action("ViewUser", controller, new { userId = Context.Request.Query[updateKey] })">
+                                    Użytkownik - @Context.Request.Query[updateKey]
+                                </a>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Dane użytkownika</h4>
+                    <hr class="w-100" />
+                </div>
+                <div class="card-body">
+                    <form method="post" id="js-form" asp-route-userId="@Context.Request.Query[updateKey]">
+                        <div class="form-group row">
+                            <label asp-for="Email" class="col-lg-3 col-form-label text-right">Email</label>
+                            <div class="col-lg-9 ">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text" data-toggle="tooltip" title="Email potwierdzony">
+                                            <input type="checkbox" asp-for="EmailConfirmed" />
+                                        </div>
+                                    </div>
+                                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="PhoneNumber" class="col-lg-3 col-form-label text-right">Numer telefonu</label>
+                            <div class="col-lg-9">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text" data-toggle="tooltip" title="Numer telefonu potwierdzony">
+                                            <input type="checkbox" asp-for="PhoneNumberConfirmed" />
+                                        </div>
+                                    </div>
+                                    <input asp-for="PhoneNumber" class="form-control" type="text" placeholder="Numer telefonu" />
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        
+                        <div class="form-group row">
+                            <label asp-for="FullName" class="col-lg-3 col-form-label text-right">Imię i nazwisko</label>
+                            <div class="col-lg-9">
+                                <input asp-for="FullName" class="form-control" placeholder="Imię" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label asp-for="WMSNumber" class="col-lg-3 col-form-label text-right">Numer WMS</label>
+                            <div class="col-lg-9">
+                                <input asp-for="WMSNumber" class="form-control" placeholder="Imię" />
+                                <span asp-validation-for="WMSNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-success float-right" id="js-f-submit"><i class="fa fa-save mr-25"></i>Zapisz</button>
+                    <a href="@Url.Action("ViewUser", "A_Users", new { userId = Context.Request.Query[updateKey] })" type="button" class="btn btn-secondary float-right mr-1"><i class="fa fa-ban mr-25"></i>Anuluj</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#js-f-submit").on('click', function () {
+                $("#js-form").submit();
+            });
+        });
+    </script>
+}

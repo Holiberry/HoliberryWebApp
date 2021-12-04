@@ -1,0 +1,426 @@
+﻿@model Holiberry.Api.Areas.Admin.ViewModels.A_Users.ViewUserInfoPartialVM
+@{
+    ViewBag.Title = "Użytkownik";
+}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Dane użytkownika</h4>
+                        <div class="space">
+                            <a href="@Url.Action("UpdateUser", new { userId = Model.UserId })" data-toggle="tooltip" title="Edytuj użytkownika" class="btn btn-icon btn-flat-secondary float-right"><i class="fa fa-edit font-medium-5"></i></a>
+
+                        </div>
+                        <hr class="w-100 mb-0" />
+                    </div>
+                    <div class="card-body">
+                        <dl class="row  mb-0">
+                            <dd class="col-sm-6 text-right">Nazwa:</dd>
+                            <dt class="col-sm-6">
+                                @Model.User.UserName
+                            </dt>
+                        </dl>
+
+                        <dl class="row  mb-0">
+                            <dd class="col-sm-6 text-right">Imię i Nazwisko:</dd>
+                            <dt class="col-sm-6">
+                                @Model.User.FirstName @Model.User.LastName
+                            </dt>
+                        </dl>
+
+                        <dl class="row  mb-0">
+                            <dd class="col-sm-6 text-right">Data rejestracji:</dd>
+                            <dt class="col-sm-6">@Model.User.CreatedAt.ToString("dd-MM-yyyy")</dt>
+                        </dl>
+
+
+                        <dl class="row mb-0">
+                            <dd class="col-sm-6 text-right">Nr tel:</dd>
+                            <dt class="col-sm-6">
+                                @if (Model.User.PhoneNumberConfirmed)
+                                {
+                                    <i class="fa fa-check-circle text-success mr-25" data-toggle="tooltip" title="Numer telefonu potwierdzony"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-circle-o text-danger mr-25" data-toggle="tooltip" title="Numer telefonu niepotwierdzony"></i>
+                                }
+                                @Model.User.PhoneNumber
+                            </dt>
+                        </dl>
+
+                        <dl class="row mb-0">
+                            <dd class="col-sm-6 text-right">Email:</dd>
+                            <dt class="col-sm-6">
+                                @if (Model.User.EmailConfirmed)
+                                {
+                                    <i class="fa fa-check-circle text-success mr-25" data-toggle="tooltip" title="Email potwierdzony"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-circle-o text-danger mr-25" data-toggle="tooltip" title="Email niepotwierdzony"></i>
+                                }
+                                @Model.User.Email
+
+                                @if (!Model.User.EmailConfirmed)
+                                {
+                                    <br />
+                                    <form asp-action="SendUserEmailConfirmEmail" method="post">
+                                        <input type="hidden" name="userId" value="@Model.UserId" />
+                                        <button type="submit" class="btn btn-icon pl-0" onclick="this.disabled=true;" data-toggle="tooltip" title="Wyślij link do potwierdzenia adresu email do użytkownika"><i class="fa fa-send mr-25"></i> Wyślij link</button>
+                                    </form>
+                                }
+                            </dt>
+                        </dl>
+
+                        
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Role</h4>
+                        <hr />
+                        @if (Model.User.UserRoles.Count > 0)
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-head-custom table-head-bg table-vertical-center table-bordered">
+                                    <tbody>
+                                        @foreach (var role in Model.User.UserRoles)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <span class="label label-lg label-dark label-inline">@role.Role?.Name</span>
+                                                </td>
+                                                <td width="5%" class="text-center">
+                                                    <a href="#" data-rolename="@role?.Role?.Name" title="Usuń rolę" class="btn-remove-role"><i class="fa fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="p-100 text-center text-danger">Użytkownik nie posiada przypisanych roli</div>
+                        }
+                        <hr class="mt-5" />
+                        <div class="row justify-content-between">
+                            <div class="col-6">
+                                <form method="post" id="form-change-role" asp-action="AddRoleToUser">
+                                    <select name="roleName" class="form-control select2">
+                                        @foreach (var role in (SelectList)ViewData["Roles"])
+                                        {
+                                            if (Model.User?.UserRoles?.Any(a => a.Role.Name == role.Value) == true)
+                                            {
+                                                <option value="@role.Value" disabled>@role.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@role.Value">@role.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                    <input type="hidden" value="@Model.UserId" name="userId" />
+                                </form>
+                            </div>
+                            <div class="col-5">
+                                <button class="btn btn-icon btn-flat-secondary float-right" data-toggle="tooltip" title="Dodaj rolę" id="btn-change-role"><i class="fa fa-plus font-medium-5"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Claimy</h4>
+                        <hr />
+                        @if (Model.User.Claims.Count > 0)
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-head-custom table-head-bg table-vertical-center table-bordered">
+                                    <tbody>
+                                        @foreach (var claim in Model.User.Claims)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <span class="label label-lg label-light-primary label-inline">@claim.ClaimType - @claim.ClaimValue</span>
+                                                </td>
+                                                <td width="5%" class="text-center">
+                                                    <a href="#" data-claimname="@claim.ClaimType" title="Usuń claim" class="btn-remove-claim"> <i class="fa fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="p-100 text-center text-danger">Użytkownik nie posiada przypisanych claimów</div>
+                        }
+                        <hr class="mt-5" />
+                        <form method="post" id="form-add-claim" asp-action="AddClaimToUser">
+                            <input type="hidden" value="@Model.UserId" name="userId" />
+                            <div class="row">
+                                <div class="col-6">
+                                    <select name="claimName" class="form-control select2" asp-items="@((SelectList)ViewData["Claims"])">
+                                        <option value="">Nazwa claima</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-6">
+                                    <input class="col form-control" placeholder="Wartość" name="claimValue" />
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-icon btn-flat-secondary float-right" data-toggle="tooltip" title="Dodaj claima" id="btn-add-claim"><i class="fa fa-plus font-medium-5"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- modal-user-change-password -->
+<div class="modal fade" id="modal-user-change-password" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Zmień hasło</h5>
+            </div>
+            <div class="modal-body">
+                <form id="form-user-change-password" class="form form-horizontal" method="post" asp-route-userId="@Model.UserId" asp-action="UserChangePassword" asp-controller="A_Users">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group row">
+                                <div class="col-4 col-form-label">
+                                    <label for="Password">Hasło</label>
+                                </div>
+                                <div class="col-8">
+                                    <div class="input-group input-group-merge">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                                        </div>
+                                        <input type="password" class="form-control" name="Password" placeholder="Hasło">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group row">
+                                <div class="col-4 col-form-label">
+                                    <label for="ConfirmPassword">Potwierdź hasło</label>
+                                </div>
+                                <div class="col-8">
+                                    <div class="input-group input-group-merge">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                                        </div>
+                                        <input type="password" class="form-control" name="ConfirmPassword" placeholder="Potwierdź hasło">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                <button id="btn-submit-user-change-password" class="btn btn-success"><i class="fa fa-save mr-25"></i>Zapisz</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal-delete-role -->
+<div class="modal fade" id="modal-delete-role" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Usuń rolę</h5>
+            </div>
+            <div class="modal-body">
+                <form id="form-delete-role" method="post" asp-action="RemoveRoleFromUser">
+
+                    <p>Czy na pewno chcesz usunąć tą rolę?</p>
+
+                    <input id="inp-delete-role-role-name" value="" name="roleName" class="input" type="hidden" />
+                    <input value="@Model.UserId" name="userId" class="input" type="hidden" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                <button id="btn-delete-role-form-submit" class="btn btn-danger"><i class="fa fa-trash mr-25"></i> Usuń</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal-delete-claim -->
+<div class="modal fade" id="modal-delete-claim" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Usuń claim</h5>
+            </div>
+            <div class="modal-body">
+                <form id="form-delete-claim" method="post" asp-action="RemoveClaimFromUser">
+
+                    <p>Czy na pewno chcesz usunąć ten claim?</p>
+
+                    <input id="inp-delete-claim-name" value="" name="claimName" class="input" type="hidden" />
+                    <input value="@Model.UserId" name="userId" class="input" type="hidden" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                <button id="btn-delete-claim-form-submit" class="btn btn-danger"><i class="fa fa-trash mr-25"></i> Usuń</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal-reset-password -->
+<div class="modal fade" id="modal-reset-password" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Zresetuj hasło</h5>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz zresetować hasło tego użytkownika?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                <button id="btn-reset-password-accept" class="btn btn-danger"><i class="fa fa-send mr-25"></i> Zresetuj</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal-reset-password-confirmed -->
+<div class="modal fade" id="modal-reset-password-confirmed" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hasło zostało zresetowane</h5>
+            </div>
+            <div class="modal-body">
+                <p>Hasło tego użytkownika zostało zresetowane pomyślnie.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-reset-password-confirmed-accept" class="btn btn-danger">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+    $(function () {
+
+        // -------------- ROLE ---------------//
+        $("#btn-change-role").on('click', function () {
+            $(this).addClass('btn-loading').prop('disabled', true);
+            $("#form-change-role").submit();
+        });
+
+        $(".btn-remove-role").on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            let roleName = $(this).data('rolename')
+
+            $("#inp-delete-role-role-name").val(roleName)
+            $('#modal-delete-role').modal('show');
+        });
+
+        $("#btn-delete-role-form-submit").on('click', function () {
+            $(this).addClass('btn-loading').prop('disabled', true);
+            $("#form-delete-role").submit();
+        });
+        // -------------- /ROLE ---------------//
+
+
+        // -------------- CLAIMY ---------------//
+        $("#btn-add-claim").on('click', function () {
+            $(this).addClass('btn-loading').prop('disabled', true);
+            $("#form-add-claim").submit();
+        });
+
+        $(".btn-remove-claim").on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            let claimName = $(this).data('claimname')
+
+            $("#inp-delete-claim-name").val(claimName)
+            $('#modal-delete-claim').modal('show');
+        });
+
+        $("#btn-delete-claim-form-submit").on('click', function () {
+            $(this).addClass('btn-loading').prop('disabled', true);
+            $("#form-delete-claim").submit();
+        });
+        // -------------- /CLAIMY ---------------//
+
+
+
+        $("#btn-user-change-password").on('click', function (e) {
+            e.preventDefault();
+            $("#modal-user-change-password").modal('show');
+        });
+
+        $("#btn-submit-user-change-password").on('click', function (e) {
+            $(this).addClass('btn-loading').prop('disabled', true);
+            $('#form-user-change-password').submit();
+        });
+
+      
+
+        // ----------- RESETOWANIE HASŁA ------------ //
+        $("#btn-reset-password").on('click', function (e) {
+            e.preventDefault();
+            $("#modal-reset-password").modal('show');
+        });
+
+        $("#btn-reset-password-accept").on('click', function (e) {
+            $(this).disabled = true;
+            e.preventDefault();
+            $('#modal-reset-password').modal('hide');
+            $.ajax({
+                url: '@Url.Action("SendUserResetPasswordEmail", "A_Users", new { userId = Model.UserId })',
+                method: "POST"
+            }).done(function () {
+                $("#modal-reset-password-confirmed").modal('show');
+            });
+        });
+
+        // -------- RESETOWANIE ZRESETOWANIA HASŁA --------- //
+        $("#btn-reset-password-confirmed-accept").on('click', function (e) {
+            e.preventDefault();
+            $("#modal-reset-password-confirmed").modal('hide');
+        });
+    });
+    </script>
+}
+
+@*Przesunięcie Tooltipa na środek przycisku*@
+<style scoped>
+    .tooltip {
+        top: 0;
+    }
+</style>

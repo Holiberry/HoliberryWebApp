@@ -1,0 +1,193 @@
+﻿@model Holiberry.Api.Areas.Admin.ViewModels.A_Users.ViewUsersVM
+@{
+    ViewBag.Title = "Użytkownicy";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between mb-1">
+        <div class="d-flex align-items-baseline">
+            <h5 class="text-dark font-weight-bold mr-1">
+                @ViewBag.Title
+                <span>
+                    (@Model.Users.PagedData.ResultsCount)
+                </span>
+            </h5>
+            <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-1 font-size-sm">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("ViewAdminDashboard", "A_Dashboard")" class="text-muted">
+                        Pulpit
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center">
+            <a href="@Url.Action("CreateUser")" data-toggle="tooltip" title="Dodaj użytkownika" class="btn btn-secondary font-weight-bold font-medium-1 ml-1" style="padding-left:20px;padding-right:20px">
+                <span class="fa fa-plus"></span>
+            </a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <form method="get" id="js-search-form">
+                @await Html.PartialAsync("~/Views/Shared/_PagerSearchParams.cshtml", Model.PaginationFilter)
+
+
+                <div class="row align-items-end">
+                    <div class="col-lg-2 mb-1">
+                        <label class="label-search">Szukaj</label>
+                        <input type="text" class="input form-control" asp-for="Search" placeholder="Szukaj.." />
+                    </div>
+                    
+                    <div class="col-lg-2 mb-1">
+                        <label class="label-search">Role</label>
+                        <select class="form-control" asp-for="Role">
+                            <option value="">Wszystkie</option>
+                            <option value="@UserRoles.Admin">Admin</option>
+                            <option value="@UserRoles.Dev">Dev</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row align-items-end">
+                    <div class="col">
+
+                    </div>
+                    <div class="col-1 ">
+                        <a href="#" data-toggle="tooltip" title="Wyszukaj" class="btn btn-info fa fa-search float-right" id="js-search-form-submit"></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body table-responsive">
+            @if (Model.Users.PagedData?.ResultsCount != 0)
+            {
+                <table class="table-bordered table">
+                    <thead class="thead-light">
+                        <tr class="text-center">
+                            <th class="btn-sort" data-ob="Id" style="width: 5%">Id</th>
+                            <th class="btn-sort" data-ob="CreatedAt">Data dodania</th>
+                            <th class="btn-sort" data-ob="UserName">Nazwa</th>
+                            <th>Imię i nazwisko</th>
+                            <th class="btn-sort" data-ob="Email">Email</th>
+                            <th>Numer tel.</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center font-small-3">
+                        @foreach (var user in Model.Users.Data)
+                        {
+                        <tr>
+                            <td class="text-nowrap"><a href="@Url.Action("ViewUser", "A_Users", new { userId = user.Id })"><i class="fa fa-user mr-25"></i>@user.Id</a></td>
+                            <td>@user.CreatedAt.ToString("dd-MM-yyyy")</td>
+                            <td class="text-nowrap">
+                                @user.UserName
+                            </td>
+                            <td>@user.FirstName @user.LastName</td>
+                            <td class="text-nowrap">
+                                @if (!user.EmailConfirmed)
+                                {
+                                    <i class="fa fa-envelope mr-25 text-danger" data-toggle="tooltip" title="Email niepotwierdzony"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-envelope mr-25 text-success" data-toggle="tooltip" title="Email potwierdzony"></i>
+                                }
+                                @user.Email
+                            </td>
+                            <td class="text-nowrap">
+                                @if (!user.PhoneNumberConfirmed)
+                                {
+                                    <i class="fa fa-mobile mr-25 text-danger" data-toggle="tooltip" title="Numer telefonu niepotwierdzony"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-mobile mr-25 text-success" data-toggle="tooltip" title="Numer telefonu potwierdzony"></i>
+                                }
+                                @user.PhoneNumber
+                            </td>
+                            <td class="txt-center">
+                                @if (user.UserRoles.Count > 0)
+                                {
+                                    @foreach (var role in user.UserRoles)
+                                    {
+                                        <span class="badge badge-pill badge-success">@role?.Role?.Name</span><br />
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="text-center m-75 font-weight-bold">Nie znaleziono użytkowników</div>
+            }
+            <div class="row">
+                <div class="col-sm-12">
+                    @await Html.PartialAsync("~/Views/Shared/Pagination/_ResultPager.cshtml", new PaginationVM(Model.Users.PagedData, this.ViewContext))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+
+            //Clear empty search values on form submit
+            $("#js-search-form").on('submit', function () {
+                var selects = $(this).find('select,input').each(function (e) {
+                    var elem = $(this);
+                    if (elem.val() == '')
+                        elem.attr('disabled', 'disabled');
+                });
+            })
+
+            //Search form click - event
+            $("#js-search-form-submit").on('click', function (e) {
+                e.preventDefault();
+                $("#js-search-form").submit();
+            })
+
+            //Search form input - enter button submit
+            $('.input').keypress(function (e) {
+                if (e.which == 13) {
+                    $('#js-search-form').submit();
+                    return false;
+                }
+            });
+
+
+            //PerPageSelect change -event
+            $("#perPageSelect").on('change', function () {
+                $("#pager-pp").val($(this).val());
+                $("#pager-p").val(1);
+                $("#js-search-form").submit();
+            })
+
+            $(".btn-sort").css("color", "#10163A");
+
+            $(".btn-sort").on('click', function () {
+
+                var obBefore = $("#pager-ob").val();
+
+                //Get selected OrderBy
+                var ob = $(this).attr("data-ob");
+                $("#pager-ob").val(ob);
+
+                //Get current OrderType
+                var currentOtInput = $("#pager-ot");
+                var ot = currentOtInput.val();
+                if (ot == "DESC" && obBefore == ob)
+                    currentOtInput.val("ASC");
+                else
+                    currentOtInput.val("DESC");
+
+                $("#js-search-form").submit();
+            });
+        });
+    </script>
+}

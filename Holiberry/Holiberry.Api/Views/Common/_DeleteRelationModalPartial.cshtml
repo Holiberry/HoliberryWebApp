@@ -1,0 +1,47 @@
+﻿@model Holiberry.Api.ViewModels.Common.DeleteRelationDataModalVM
+@using Holiberry.Api.Extensions
+@{
+    var removeRelatedId = Model.ModalId + "-id";
+    var removeFormId = "js-" + Model.ModalId + "-form";
+    var btnSubmitFormId = "js-" + Model.ModalId + "-submit";
+}
+<div class="modal fade" id="@Model.ModalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@Model.Title</h5>
+            </div>
+            <div class="modal-body">
+                <p>@Model.QueryValue</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                <button id="@btnSubmitFormId" class="btn btn-danger"><i class="fa fa-trash mr-25"></i> Usuń</button>
+                <form id="@removeFormId" method="post" action="@Model.DeleteURL">
+                    <input id="@removeRelatedId" value="" name="@Model.RelatedEntityName" class="input" type="hidden" />
+                    @if (Model.EntityName != null)
+                    {
+                        <input value="@Model.EntityId" name="@Model.EntityName" class="input" type="hidden" />
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.PartialSectionScripts(
+    @<script>
+         $('.@Model.BtnDeleteClass').on('click', function (e) {
+             e.preventDefault();
+             let id = $(this).data('id');
+
+             $('#@removeRelatedId').val(id);
+             console.log('@removeRelatedId: ', id);
+         });
+
+         $("#@btnSubmitFormId").on('click', function (e) {
+             e.preventDefault();
+             $(this).addClass('btn-loading').prop('disabled', true);
+             $("#@removeFormId").submit();
+         });
+    </script>
+)

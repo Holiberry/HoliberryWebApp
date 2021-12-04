@@ -1,0 +1,94 @@
+﻿@model Holiberry.Api.ViewModels.Common.SubheaderVM
+
+<div class="subheader subheader-solid" id="kt_subheader">
+    <div class=" container-fluid  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold mr-1">
+                    @Model.Title
+                    @if (Model.ResultCount.HasValue)
+                    {
+                        <span>
+                            (@Model.ResultCount)
+                        </span>
+                    }
+                </h5>
+
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("ViewAdminDashboard", "A_Dashboard")" class="text-muted">
+                            Dashboard
+                        </a>
+                    </li>
+                    @if (Model.PrevPage != null)
+                    {
+                        <li class="breadcrumb-item">
+                            <a href="@Model.PrevPage?.Url" class="text-muted">
+                                @Model.PrevPage?.Name
+                            </a>
+                        </li>
+                    }
+                    @if (Model.PrevPrevPage != null)
+                    {
+                        <li class="breadcrumb-item">
+                            <a href="@Model.PrevPrevPage?.Url" class="text-muted">
+                                @Model.PrevPrevPage?.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+            <!--begin::Actions-->
+            @if (Model.ExtraOptionButton != null)
+            {
+                <a href="@Model.ExtraOptionButton?.Url" class="btn btn-primary font-weight-bold btn-sm mr-2">
+                    @Model.ExtraOptionButton?.Name
+                </a>
+            }
+            @if (Model.ExtraOptionClassButton != null)
+            {
+                <a href="#" class="btn btn-primary font-weight-bold btn-sm" data-toggle="modal" data-target="@Model.ExtraOptionClassButton?.ClassName">
+                    @Model.ExtraOptionClassButton?.Name
+                </a>
+            }
+            @if (!String.IsNullOrEmpty(Model.CreateLink))
+            {
+                <a href="@Model.CreateLink" class="btn btn-success font-weight-bold">
+                    Create
+                </a>
+            }
+            @if (Model.CreateRelation != null)
+            {
+                <a href="@Model.CreateRelation?.Url" class="btn btn-success font-weight-bold btn-sm mr-2">
+                    <i class="fa fa-plus-circle"></i>@Model.CreateRelation?.Name
+                </a>
+            }
+            @if (!String.IsNullOrEmpty(Model.UpdateLink))
+            {
+                <a href="@Model.UpdateLink" class="btn btn-success font-weight-bold">
+                    Edit
+                </a>
+            }
+            @if (!String.IsNullOrEmpty(Model.DeleteClassName))
+            {
+                <a href="#" class="btn btn-danger font-weight-bold ml-1" data-toggle="modal" data-target="@Model.DeleteClassName">
+                    Delete
+                </a>
+            }
+            <!--end::Actions-->
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+<!--end::Subheader-->

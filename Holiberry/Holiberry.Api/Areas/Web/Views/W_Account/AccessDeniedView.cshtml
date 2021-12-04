@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Odmowa dostępu";
+}
+<!-- BEGIN: Content-->
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-9">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="c-box-title text-danger">
+                        <span>Wystąpił błąd</span>
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <span>Nie posiadasz uprawnień do tej strony</span>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary" id="backButton" href="#">Wróć</a>
+                    <a class="btn btn-secondary float-right"  href="@Url.Action("Logout", "P_Account", new { area = "Public" })">Wyloguj</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+   
+@section scripts
+{ 
+    <script>
+        $(function () {
+            $("#backButton").on('click', function (e) {
+                e.preventDefault();
+                window.history.go(-1);
+            });
+        });
+    </script>
+}
+
+    
+

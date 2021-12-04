@@ -1,0 +1,181 @@
+﻿@model Holiberry.Api.Areas.Admin.ViewModels.A_ServerLogs.ViewServerLogsVM
+@using Holiberry.Api.ViewModels.Common
+@{
+    ViewBag.Title = "Logi serwera";
+    string controller = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between mb-1">
+        <div class="d-flex align-items-baseline">
+            <h5 class="text-dark font-weight-bold mr-1">
+                @ViewBag.Title
+                <span>
+                    (@Model.ServerLogs.PagedData.ResultsCount)
+                </span>
+            </h5>
+            <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-1 font-size-sm">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("ViewAdminDashboard", "A_Dashboard")" class="text-muted">
+                        Pulpit
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center">
+            @*<a href="@Url.Action("CreateUser", controller)" class="btn btn-success font-weight-bold font-medium-1 ml-1" style="padding-left:20px;padding-right:20px">
+                    <span class="fa fa-plus"></span>
+                </a>*@
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <form method="get" id="js-search-form">
+                @await Html.PartialAsync("~/Views/Shared/_PagerSearchParams.cshtml", Model.PaginationFilter)
+
+
+                <div class="row align-items-end">
+                    <div class="col-lg-2 mb-1">
+                        <label>Szukaj</label>
+                        <input type="text" class="form-control" asp-for="Search" placeholder="Szukaj.." />
+                    </div>
+
+                    <div class="col">
+
+                    </div>
+                    <div class="col-1 ">
+                        <a href="#" data-toggle="tooltip" title="Wyszukaj" class="btn btn-info fa fa-search float-right" id="js-search-form-submit"></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body table-responsive">
+            @if (Model.ServerLogs.PagedData?.ResultsCount != 0)
+            {
+                <table class="table-bordered table">
+                    <thead class="thead-light">
+                        <tr class="text-center">
+                            <th data-ob="Id" class="btn-sort" style="width:1%">Id</th>
+                            <th data-ob="CreatedAt" class="btn-sort" style="width:5%">Data</th>
+                            <th data-ob="Id" class="btn-sort" style="width:5%">Poziom</th>
+                            <th data-ob="FileName" class="btn-sort">Plik</th>
+                            <th data-ob="MethodName" class="btn-sort">Metoda</th>
+                            <th style="width:1%">Line/Column</th>
+                            <th style="width:5%">RunSource</th>
+                            <th style="width:5%">UserId</th>
+                            <th class="text-left" style="width:100%">Messages</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @foreach (var p in Model.ServerLogs.Data)
+                        {
+                            <tr>
+                                <td>@p.Id</td>
+                                <td >@p.CreatedAt.ToLocalTimeString(LongDateWithSecondsFormat)</td>
+                                <td>
+                                    @p.ServerLogLevel
+                                </td>
+                                <td>
+                                    @p.FileName
+                                </td>
+                                <td>
+                                    @p.MethodName
+                                </td>
+                                <td class="text-nowrap">
+                                    @p.LineNumber <span>/</span> @p.ColumnNumber
+                                </td>
+                                <td>
+                                    @p.RunSource
+                                </td>
+                                <td class="text-nowrap">
+                                    @if (p.UserId != null)
+                                    {
+                                        <a href="@Url.Action("ViewUser", "A_Users", new { userId = p.UserId })"><i class="fa fa-user mr-25"></i>@p.UserId</a>
+                                    }
+                                </td>
+                                <td class="text-left">
+                                    @p.Message<br />
+                                    @p.InnerMessage
+                                    <br />
+                                    <a href="#" class="showStackTrace">StackTrace</a>
+                                    <span class="stackTrace" style="display:none">
+                                        @p.StackTrace
+                                    </span>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="text-center m-75 font-weight-bold">Nie znaleziono logów serwera</div>
+            }
+            <div class="row">
+                <div class="col-sm-12">
+                    @await Html.PartialAsync("~/Views/Shared/Pagination/_ResultPager.cshtml", new PaginationVM(Model.ServerLogs.PagedData, this.ViewContext))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            //Clear empty search values on form submit
+            $("#js-search-form").on('submit', function () {
+                var selects = $(this).find('select,input').each(function (e) {
+                    var elem = $(this);
+                    if (elem.val() == '')
+                        elem.attr('disabled', 'disabled');
+                });
+            })
+            //Search form click - event
+            $("#js-search-form-submit").on('click', function (e) {
+                e.preventDefault();
+                $("#js-search-form").submit();
+            })
+            //Search form input - enter button submit
+            $('.input').keypress(function (e) {
+                if (e.which == 13) {
+                    $('#js-search-form').submit();
+                    return false;
+                }
+            });
+            //PerPageSelect change -event
+            $("#perPageSelect").on('change', function () {
+                $("#pager-pp").val($(this).val());
+                $("#pager-p").val(1);
+                $("#js-search-form").submit();
+            })
+            $(".btn-sort").css("color", "#10163A");
+            $(".btn-sort").on('click', function () {
+                var obBefore = $("#pager-ob").val();
+                //Get selected OrderBy
+                var ob = $(this).attr("data-ob");
+                $("#pager-ob").val(ob);
+                //Get current OrderType
+                var currentOtInput = $("#pager-ot");
+                var ot = currentOtInput.val();
+                if (ot == "DESC" && obBefore == ob)
+                    currentOtInput.val("ASC");
+                else
+                    currentOtInput.val("DESC");
+                $("#js-search-form").submit();
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".showStackTrace").on('click', function (e) {
+                e.preventDefault();
+                $(this).next(".stackTrace").toggle();
+            });
+        })
+    </script>
+}
