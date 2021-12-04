@@ -120,131 +120,122 @@ namespace Holiberry.Api.Areas.Public.Controllers
 
 
 
-
-
-
-
-
-
-
-
-        //    [HttpPost("schools")]
-        //    public async Task<IActionResult> PostSchools([FromBody] List<SchoolDTO> schools)
-        //    {
-        //        var city = await _db.Cities
-        //            .Where(a => a.Code == "WRO")
-        //            .FirstOrDefaultAsync();
-        //        if(city == null)
-        //        {
-        //            city = new CityM()
-        //            {
-        //                Code = "WRO",
-        //                Name = "Wrocław",
-        //                Lat = 51.107883,
-        //                Lng = 17.038538,
-        //            };
-
-        //            await _db.AddAsync(city);
-        //        }
-
-
-        //        var schoolsToAdd = new List<SchoolM>();
-
-        //        foreach (var s in schools)
-        //        {
-        //            double? lat = double.TryParse(s.Coordinates?.Split(",")?.FirstOrDefault(), NumberStyles.Any, new CultureInfo("en"), out var _lat) ? _lat : (double?)null;
-        //            double? lng = double.TryParse(s.Coordinates?.Split(",")?.LastOrDefault(), NumberStyles.Any, new CultureInfo("en"), out var _lng) ? _lng : (double?)null;
-
-
-        //            var sch = new SchoolM()
-        //            {
-        //                City = city,
-        //                Name = s.Nazwa,
-        //                NumberRSPO = int.Parse(s.NumerRSPO),
-        //                Lat = lat,
-        //                Lng = lng
-        //            };
-
-        //            schoolsToAdd.Add(sch);
-        //        }
-
-        //        await _db.AddRangeAsync(schoolsToAdd);
-        //        await _db.SaveChangesAsync();
-
-        //        return Ok();
-        //    }
-
-
-        //}
-
-
-        public class SchoolDTO
+        [HttpPost("schools")]
+        public async Task<IActionResult> PostSchools([FromBody] List<SchoolDTO> schools)
         {
-            [JsonProperty("NumerRSPO")]
-            public string NumerRSPO { get; set; }
+            //var city = await _db.Cities
+            //    .Where(a => a.Code == "WRO")
+            //    .FirstOrDefaultAsync();
+            //if (city == null)
+            //{
+            //    city = new CityM()
+            //    {
+            //        Code = "WRO",
+            //        Name = "Wrocław",
+            //        Lat = 51.107883,
+            //        Lng = 17.038538,
+            //    };
 
-            [JsonProperty("REGONpodmiotu")]
-            public string REGONpodmiotu { get; set; }
+            //    await _db.AddAsync(city);
+            //}
 
-            [JsonProperty("NIPpodmiotu")]
-            public string NIPpodmiotu { get; set; }
 
-            [JsonProperty("Typ")]
-            public string Typ { get; set; }
+            //var schoolsToAdd = new List<SchoolM>();
 
-            [JsonProperty("Nazwa")]
-            public string Nazwa { get; set; }
+            //foreach (var s in schools)
+            //{
+            //    double? lat = double.TryParse(s.Coordinates?.Split(",")?.FirstOrDefault(), NumberStyles.Any, new CultureInfo("en"), out var _lat) ? _lat : (double?)null;
+            //    double? lng = double.TryParse(s.Coordinates?.Split(",")?.LastOrDefault(), NumberStyles.Any, new CultureInfo("en"), out var _lng) ? _lng : (double?)null;
 
-            [JsonProperty("Kodterytorialnywoj")]
-            public string Kodterytorialnywoj { get; set; }
 
-            [JsonProperty("Kodterytorialnypowiat")]
-            public string Kodterytorialnypowiat { get; set; }
+            //    var sch = new SchoolM()
+            //    {
+            //        City = city,
+            //        Name = s.Nazwa,
+            //        NumberRSPO = int.Parse(s.NumerRSPO),
+            //        Lat = lat,
+            //        Lng = lng
+            //    };
 
-            [JsonProperty("Kodterytorialnygmina")]
-            public string Kodterytorialnygmina { get; set; }
+            //    schoolsToAdd.Add(sch);
+            //}
 
-            [JsonProperty("Kodterytorialnymiejscowosc")]
-            public string Kodterytorialnymiejscowosc { get; set; }
+            //await _db.AddRangeAsync(schoolsToAdd);
+            //await _db.SaveChangesAsync();
 
-            [JsonProperty("Kodterytorialnyulica")]
-            public string Kodterytorialnyulica { get; set; }
-
-            [JsonProperty("Wojew")]
-            public string Wojew { get; set; }
-
-            [JsonProperty("Powiat")]
-            public string Powiat { get; set; }
-
-            [JsonProperty("Gmina")]
-            public string Gmina { get; set; }
-
-            [JsonProperty("Miejscowosc")]
-            public string Miejscowosc { get; set; }
-
-            [JsonProperty("Rodzajmiejscowosci")]
-            public string Rodzajmiejscowosci { get; set; }
-
-            [JsonProperty("Ulica")]
-            public string Ulica { get; set; }
-
-            [JsonProperty("Numerbudynku")]
-            public string Numerbudynku { get; set; }
-
-            [JsonProperty("Numerlokalu")]
-            public string Numerlokalu { get; set; }
-
-            [JsonProperty("Kodpocztowy")]
-            public string Kodpocztowy { get; set; }
-
-            [JsonProperty("Poczta")]
-            public string Poczta { get; set; }
-
-            [JsonProperty("adres")]
-            public string Adres { get; set; }
-
-            [JsonProperty("Coordinates")]
-            public string Coordinates { get; set; }
+            return Ok();
         }
+
+
+    }
+
+
+    public class SchoolDTO
+    {
+        [JsonProperty("NumerRSPO")]
+        public string NumerRSPO { get; set; }
+
+        [JsonProperty("REGONpodmiotu")]
+        public string REGONpodmiotu { get; set; }
+
+        [JsonProperty("NIPpodmiotu")]
+        public string NIPpodmiotu { get; set; }
+
+        [JsonProperty("Typ")]
+        public string Typ { get; set; }
+
+        [JsonProperty("Nazwa")]
+        public string Nazwa { get; set; }
+
+        [JsonProperty("Kodterytorialnywoj")]
+        public string Kodterytorialnywoj { get; set; }
+
+        [JsonProperty("Kodterytorialnypowiat")]
+        public string Kodterytorialnypowiat { get; set; }
+
+        [JsonProperty("Kodterytorialnygmina")]
+        public string Kodterytorialnygmina { get; set; }
+
+        [JsonProperty("Kodterytorialnymiejscowosc")]
+        public string Kodterytorialnymiejscowosc { get; set; }
+
+        [JsonProperty("Kodterytorialnyulica")]
+        public string Kodterytorialnyulica { get; set; }
+
+        [JsonProperty("Wojew")]
+        public string Wojew { get; set; }
+
+        [JsonProperty("Powiat")]
+        public string Powiat { get; set; }
+
+        [JsonProperty("Gmina")]
+        public string Gmina { get; set; }
+
+        [JsonProperty("Miejscowosc")]
+        public string Miejscowosc { get; set; }
+
+        [JsonProperty("Rodzajmiejscowosci")]
+        public string Rodzajmiejscowosci { get; set; }
+
+        [JsonProperty("Ulica")]
+        public string Ulica { get; set; }
+
+        [JsonProperty("Numerbudynku")]
+        public string Numerbudynku { get; set; }
+
+        [JsonProperty("Numerlokalu")]
+        public string Numerlokalu { get; set; }
+
+        [JsonProperty("Kodpocztowy")]
+        public string Kodpocztowy { get; set; }
+
+        [JsonProperty("Poczta")]
+        public string Poczta { get; set; }
+
+        [JsonProperty("adres")]
+        public string Adres { get; set; }
+
+        [JsonProperty("Coordinates")]
+        public string Coordinates { get; set; }
     }
 }
