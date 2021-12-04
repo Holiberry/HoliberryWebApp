@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="/assets/css/style-lobelia.css" id="changeTheme">
     <!-- Extra CSS -->
     <link rel="stylesheet" href="/assets/css/theme.css">
+    @await RenderSectionAsync("Styles", false)
 </head>
 <body class="nk-body body-wider mode-onepage bg-light">
     <div class="nk-wrap">
@@ -81,9 +82,8 @@
             <!-- Banner @@s -->
             <div class="header-banner bg-theme-grad">
                 <div class="nk-banner">
-                    
-                </div><!-- .nk-banner -->
 
+                </div><!-- .nk-banner -->
                 <!-- Place Particle Js -->
                 <!-- <div id="particles-bg" class="particles-container particles-bg"></div> -->
             </div>
@@ -92,65 +92,65 @@
 
         @RenderBody()
 
-    <footer class="nk-footer bg-theme-grad ov-h overlay-x">
-        <section class="section tc-light tc-light-alt bg-transparent">
-            <div class="container">
-                <!-- Block @@s -->
-                <div class="nk-block nk-block-footer">
-                    <div class="row justify-content-between text-center text-sm-left">
-                        <div class="col-lg-3 col-md-4 col-sm-5">
-                            <div class="wgs wgs-menu">
-                                <h6 class="wgs-title wgs-title-s2 text-white">Adres</h6>
-                                <div class="wgs-body">
-                                    <ul class="wgs-list wgs-list-s2">
-                                        <li class="pdb-s">FiberMove Sp. z o.o.<br></li>
-                                        <li>Matuszczka 14 <br> 35-083 Rzeszów</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- .col -->
-                        <div class="col-lg-2 col-md-4 col-sm-3">
-                            <div class="wgs wgs-menu">
-                                <h6 class="wgs-title wgs-title-s2 text-white">O firmie</h6>
-                                <div class="wgs-body">
-                                    <ul class="wgs-links wgs-links-s2">
-                                        <li><a href="#ofirmie">Informacje</a></li>
-                                        <li><a href="#rozwiązania">Rozwiązania</a></li>
-                                        <li><a href="#">Klienci</a></li>
-                                        <li><a href="#">Kontakt</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- .col -->
-                        <div class="col-lg-2 col-md-4 col-sm-3">
-                        
-                        </div>
-                        <!-- .col -->
-                        <div class="col-lg-4 col-md-8 offset-lg-1">
-                            <div class="wgs wgs-text">
-                                <a class="wgs-logo" href="#"><img src="images/logo-full-white.png" srcset="images/logo-full-white.png 2x" alt="logo"></a>
-                                <div class="wgs-body">
-                                    <div class="wgs-subscribe wgs-subscribe-s2">
-                                        <p>FiberMove to dostawca nowoczesnych rozwiązań w obszarach mobilności współdzielonej</p>        
+        <footer class="nk-footer bg-theme-grad ov-h overlay-x">
+            <section class="section tc-light tc-light-alt bg-transparent">
+                <div class="container">
+                    <!-- Block @@s -->
+                    <div class="nk-block nk-block-footer">
+                        <div class="row justify-content-between text-center text-sm-left">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
+                                <div class="wgs wgs-menu">
+                                    <h6 class="wgs-title wgs-title-s2 text-white">Adres</h6>
+                                    <div class="wgs-body">
+                                        <ul class="wgs-list wgs-list-s2">
+                                            <li class="pdb-s">FiberMove Sp. z o.o.<br></li>
+                                            <li>Matuszczka 14 <br> 35-083 Rzeszów</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
+                            <!-- .col -->
+                            <div class="col-lg-2 col-md-4 col-sm-3">
+                                <div class="wgs wgs-menu">
+                                    <h6 class="wgs-title wgs-title-s2 text-white">O firmie</h6>
+                                    <div class="wgs-body">
+                                        <ul class="wgs-links wgs-links-s2">
+                                            <li><a href="#ofirmie">Informacje</a></li>
+                                            <li><a href="#rozwiązania">Rozwiązania</a></li>
+                                            <li><a href="#">Klienci</a></li>
+                                            <li><a href="#">Kontakt</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- .col -->
+                            <div class="col-lg-2 col-md-4 col-sm-3">
+
+                            </div>
+                            <!-- .col -->
+                            <div class="col-lg-4 col-md-8 offset-lg-1">
+                                <div class="wgs wgs-text">
+                                    <a class="wgs-logo" href="#"><img src="images/logo-full-white.png" srcset="images/logo-full-white.png 2x" alt="logo"></a>
+                                    <div class="wgs-body">
+                                        <div class="wgs-subscribe wgs-subscribe-s2">
+                                            <p>FiberMove to dostawca nowoczesnych rozwiązań w obszarach mobilności współdzielonej</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- .col -->
                         </div>
-                        <!-- .col -->
-                    </div>
-                    <!-- .row -->
-                    <div class="footer-bottom pdt-r">
-                        <div class="copyright-text copyright-text-s3 text-center">
-                            <p>© @DateTime.Now.Year FiberMove.</p>
+                        <!-- .row -->
+                        <div class="footer-bottom pdt-r">
+                            <div class="copyright-text copyright-text-s3 text-center">
+                                <p>© @DateTime.Now.Year FiberMove.</p>
+                            </div>
                         </div>
                     </div>
+                    <!-- .block @@e -->
                 </div>
-                <!-- .block @@e -->
-            </div>
-        </section>
-    </footer>
+            </section>
+        </footer>
     </div>
 
 
@@ -161,6 +161,7 @@
     <script src="/assets/js/jquery.bundle.js?ver=192"></script>
     <script src="/assets/js/scripts.js?ver=192"></script>
     <script src="/assets/js/charts.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

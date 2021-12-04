@@ -1,5 +1,6 @@
 ﻿using Holiberry.Web.Attributes;
 using Holiberry.Web.Config;
+using Holiberry.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -27,6 +28,14 @@ namespace Holiberry.Web.Controllers
         public IActionResult Ranking()
         {
             return View();
+        }
+
+
+        public IActionResult ViewSchools()
+        {
+            var vm = new ViewSchoolsVM();
+
+            return View(vm);
         }
     }
 }
