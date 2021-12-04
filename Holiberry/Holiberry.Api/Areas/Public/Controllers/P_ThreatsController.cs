@@ -3,6 +3,7 @@ using Holiberry.Api.Config;
 using Holiberry.Api.Extensions;
 using Holiberry.Api.Models.Threats;
 using Holiberry.Api.Persistence;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace Holiberry.Api.Areas.User.Controllers
 
 
         [HttpGet("user-threats")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetUserThreats()
         {
             var threats = new List<UserThreatM>()
@@ -152,6 +154,7 @@ namespace Holiberry.Api.Areas.User.Controllers
 
 
         [HttpGet("threats")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetThreats()
         {
 
