@@ -4,6 +4,7 @@ using Holiberry.Api.Extensions;
 using Holiberry.Api.Models.Checkpoints;
 using Holiberry.Api.Models.Exceptions;
 using Holiberry.Api.Models.Feats;
+using Holiberry.Api.Models.Prizes;
 using Holiberry.Api.Models.Quests;
 using Holiberry.Api.Models.Users.Entities.Identity;
 using Holiberry.Api.Persistence;
@@ -283,6 +284,41 @@ namespace Holiberry.Api.Areas.User.Controllers
             };
 
             return Ok(userFeats);
+        }
+        
+
+
+        [HttpGet("get-prizes")]
+        public async Task<IActionResult> GetPrizes()
+        {
+            var feats = new List<PrizeM>()
+            {
+                new PrizeM()
+                {
+                    Name = "Bilet do kina",
+                    Description = "Bilet na wybrany film z kategorii \"Animowane\"",
+                },
+            };
+
+            return Ok(feats);
+        }
+
+
+        [HttpGet("get-prizes/my")]
+        public async Task<IActionResult> GetMyPrizes()
+        {
+            var userPrizes = new List<UserPrizeM>()
+            {
+                new UserPrizeM()
+                {
+                    CreatedAt = DateTimeOffset.Now,
+                    PrizeId = 2,
+                    IsUsed = false
+                }
+            };
+
+
+            return Ok(userPrizes);
         }
 
 
