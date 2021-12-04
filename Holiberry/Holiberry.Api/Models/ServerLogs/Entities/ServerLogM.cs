@@ -1,11 +1,11 @@
 ﻿using System;
+using Holiberry.Api.Models.Common.Entities;
 using Holiberry.Api.Models.ServerLogs.Enums;
 
 namespace Holiberry.Api.Models.ServerLogs.Entities
 {
-    public class ServerLogM
+    public class ServerLogM : EntityBaseM
     {
-        public long Id { get; set; }
         public int ApiVersion { get; set; }
         public ServerLogLevelE ServerLogLevel { get; set; }
         public DateTimeOffset CreatedAt { get; set; }

@@ -12,8 +12,9 @@ namespace Holiberry.Api.Models.Cities
         public string Code { get; set; }
 
 
-
+ 
         public double? Lat { get; set; }
         public double? Lng { get; set; }
+        public Point Position => Lat != null && Lng != null ? new Point(Lng.Value, Lat.Value) { SRID = 4326 } : null;
     }
 }
