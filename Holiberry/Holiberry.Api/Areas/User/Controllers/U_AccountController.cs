@@ -1,7 +1,9 @@
 ﻿using Holiberry.Api.Attributes;
 using Holiberry.Api.Config;
 using Holiberry.Api.Extensions;
+using Holiberry.Api.Models.Checkpoints;
 using Holiberry.Api.Models.Exceptions;
+using Holiberry.Api.Models.Feats;
 using Holiberry.Api.Models.Quests;
 using Holiberry.Api.Models.Users.Entities.Identity;
 using Holiberry.Api.Persistence;
@@ -43,7 +45,7 @@ namespace Holiberry.Api.Areas.User.Controllers
         }
 
 
-        
+
 
 
         [HttpGet("me")]
@@ -93,7 +95,7 @@ namespace Holiberry.Api.Areas.User.Controllers
                 TotalPrizes = user.TotalPrizes,
                 TotalQuests = user.TotalQuests,
                 TotalPointsEarned = user.TotalPointsEarned,
-                
+
                 hasSchool = user.School != null,
                 hasHome = user.Home != null,
                 hasParent = user.ParentId != null,
@@ -174,7 +176,7 @@ namespace Holiberry.Api.Areas.User.Controllers
         {
             var quests = new List<UserQuestM>()
             {
-                
+
             };
 
 
@@ -184,17 +186,107 @@ namespace Holiberry.Api.Areas.User.Controllers
 
 
 
+        [HttpPost("add-school")]
+        public async Task<IActionResult> SetSchool(long schoolId)
+        {
 
-
-
-
-
-
-
-
-
-
-
-
+            return Ok(new { schoolId });
         }
+
+
+
+        [HttpPost("add-parent")]
+        public async Task<IActionResult> AddParent(string email)
+        {
+
+            return Ok(new { email });
+        }
+
+
+        [HttpPost("add-checkpoint")]
+        public async Task<IActionResult> AddCheckpoint(double locLat, double locLng)
+        {
+
+            return Ok(new UserCheckpointM
+            {
+                Id = 5,
+                Description = "Zbiórka o 7:30 - czekamy 30 min",
+                DateFrom = DateTimeOffset.Now.Date.AddHours(7.5),
+                DateTo = DateTimeOffset.Now.Date.AddHours(8),
+                Lat = locLat,
+                Lng = locLng
+            });
+        }
+
+
+        [HttpPost("update-profile")]
+        public async Task<IActionResult> UpdateMyData(string email, string firstName, string lastName, string userName)
+        {
+
+
+            return Ok();
+        }
+
+
+
+
+
+        [HttpGet("get-feats")]
+        public async Task<IActionResult> GetFeats()
+        {
+            var feats = new List<FeatM>()
+            {
+                new FeatM()
+                {
+                    Name = "Young biker",
+                    Description = "Przejedź 10 km rowerem",
+                    PrizePointsAmount = 10,
+                    Type = FeatTypeE.DistanceBikeGlobal,
+                },
+                new FeatM()
+                {
+                    Name = "Advanced biker",
+                    Description = "Przejedź 100 km rowerem",
+                    PrizePointsAmount = 25,
+                    Type = FeatTypeE.DistanceBikeGlobal,
+                },
+                new FeatM()
+                {
+                    Name = "Professional biker",
+                    Description = "Przejedź 250 km rowerem",
+                    PrizePointsAmount = 50,
+                    Type = FeatTypeE.DistanceBikeGlobal,
+                },
+                new FeatM()
+                {
+                    Name = "Master biker",
+                    Description = "Przejedź 500 km rowerem",
+                    PrizePointsAmount = 100,
+                    Type = FeatTypeE.DistanceBikeGlobal,
+                }
+            };
+
+            return Ok(feats);
+        }
+
+
+        [HttpGet("get-feats/my")]
+        public async Task<IActionResult> GetMyFeats()
+        {
+            var userFeats = new List<UserFeatM>()
+            {
+                new UserFeatM()
+                {
+                    CreatedAt = DateTimeOffset.Now,
+                    FeatId = 5,
+                }
+            };
+
+            return Ok(userFeats);
+        }
+
+
+
+
+    }
 }
