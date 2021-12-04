@@ -9,6 +9,19 @@ namespace Holiberry.Api.Common.DTO
         public double Lat { get; set; }
         public double Lng { get; set; }
 
+
+        public PositionDTO()
+        {
+        }
+
+        public PositionDTO(double lat, double lng)
+        {
+            Lat = lat;
+            Lng = lng;
+        }
+
+
+
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Point, PositionDTO>()

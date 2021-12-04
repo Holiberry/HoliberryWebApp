@@ -12,6 +12,7 @@ namespace Holiberry.Api.Models.Schools
     public class SchoolM : EntityBaseM
     {
         public string Name { get; set; }
+        public int? NumberRSPO { get; set; }
         public string Description { get; set; }
         public int Type { get; set; } // todo - enum
 
@@ -25,6 +26,9 @@ namespace Holiberry.Api.Models.Schools
         public double? Lat { get; set; }
         public double? Lng { get; set; }
         public Point Position => Lat != null && Lng != null ? new Point(Lng.Value, Lat.Value) { SRID = 4326 } : null;
+        public PositionDTO PositionDTO => Lat != null && Lng != null ? new PositionDTO(Lng.Value, Lat.Value) : null;
+        
+        
         public string GetPhotoUrl()
         {
             return string.Empty;

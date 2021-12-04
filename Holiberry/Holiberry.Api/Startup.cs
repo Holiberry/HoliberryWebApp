@@ -68,7 +68,7 @@ namespace Holiberry.Api
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("Database"), opt => opt.UseNetTopologySuite()));
+                options.UseNpgsql(Configuration.GetConnectionString("Database")));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(cfg =>
