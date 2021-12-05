@@ -200,5 +200,85 @@ namespace Holiberry.Api.Areas.User.Controllers
         }
 
 
+        [HttpGet("my-tracks/track")]
+        public async Task<IActionResult> GetMyTrack(long trackId)
+        {
+            return Ok(new
+            {
+                TrackId = 5,
+
+                DestinationTypeStr = TrackDestinationTypeE.School.GetDisplayName(),
+                DestinationType = TrackDestinationTypeE.School,
+
+                TransportType = TrackTransportTypeE.Walking.GetDisplayName(),
+                TransportTypeStr = TrackTransportTypeE.Walking,
+
+                StatusStr = TrackStatusE.Finished.GetDisplayName(),
+                Status = TrackStatusE.Finished,
+
+                LatStart = 51.10217606376395,
+                LngStart = 17.10598562894213,
+
+                LatFinish = 51.10547298756479,
+                LngFinish = 17.094063345406525,
+
+                Distance = 0.895
+            });
+        }
+        
+
+
+        [HttpPost("my-tracks/start-track")]
+        public async Task<IActionResult> StartTrack(string destinationType, string transportType, double locLat, double locLng, double? destLat, double? destLng)
+        {
+            
+
+            return Ok(new 
+            { 
+                trackId = 1 
+            });
+        }
+
+
+
+        [HttpPost("my-tracks/finish-track")]
+        public async Task<IActionResult> FinishTrack(double locLat, double locLng)
+        {
+            
+
+
+
+            return Ok(new 
+            { 
+                trackId = 1 
+            });
+        }
+
+
+        [HttpGet("my-tracks/current-track")]
+        public async Task<IActionResult> GetCurrentTrack()
+        {
+            
+
+            return Ok(new
+            {
+                TrackId = 18,
+                DestinationTypeStr = TrackDestinationTypeE.School.GetDisplayName(),
+                DestinationType = TrackDestinationTypeE.School,
+
+                TransportType = TrackTransportTypeE.Walking.GetDisplayName(),
+                TransportTypeStr = TrackTransportTypeE.Walking,
+
+                StatusStr = TrackStatusE.Active.GetDisplayName(),
+                Status = TrackStatusE.Active,
+
+                LatStart = 51.10217606376395,
+                LngStart = 17.10598562894213,
+
+                Distance = 0.154
+            });
+        }
+
+
     }
 }

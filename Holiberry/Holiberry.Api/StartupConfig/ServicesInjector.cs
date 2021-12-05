@@ -6,6 +6,7 @@ using Holiberry.Api.Managers.ViewRender;
 using Holiberry.Api.Persistence;
 using Holiberry.Api.ServerLogs;
 using Microsoft.Extensions.DependencyInjection;
+using Holiberry.Api.Services.AirQuality;
 
 namespace Holiberry.Api.StartupConfig
 {
@@ -17,6 +18,9 @@ namespace Holiberry.Api.StartupConfig
             services.AddScoped<IServerLogger, ServerLogger>();
             
             services.AddScoped<IDbFileService, DbFileService>();
+
+            services.AddScoped<IAirQualityApi, AirQualityApi>();
+            services.AddScoped<IAirQualityClient, AirQualityClient>();
         }
     }
 
